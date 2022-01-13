@@ -11,9 +11,12 @@ public class FirstPersonController : MonoBehaviour
     private float turnSmoothVelocity;
     private Vector3 moveDirection;
 
+    public int Health { get; private set; }
+
     // Start is called before the first frame update
     void Start()
     {
+        Health = 3;
         rb = GetComponent<Rigidbody>();
     }
 
@@ -25,7 +28,6 @@ public class FirstPersonController : MonoBehaviour
         if(direction.magnitude >= 0.1f)
         {
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + transform.eulerAngles.y;
-            Debug.Log(targetAngle);
             moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
         }
         else
@@ -45,4 +47,11 @@ public class FirstPersonController : MonoBehaviour
     { 
         rb.velocity = moveDirection.normalized * moveSpeed * Time.fixedDeltaTime * 10;
     }
+
+    public void TakeHit()
+    {
+        Health -= 1;
+        Debug.Log(Health);
+    }
+
 }
