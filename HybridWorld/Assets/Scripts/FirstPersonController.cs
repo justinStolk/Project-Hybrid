@@ -9,7 +9,7 @@ public class FirstPersonController : MonoBehaviour
     private Rigidbody rb;
     private float turnSmoothTime = 0.1f;
     private float turnSmoothVelocity;
-    private Vector3 direction;
+    private Vector3 moveDirection;
 
     // Start is called before the first frame update
     void Start()
@@ -21,20 +21,28 @@ public class FirstPersonController : MonoBehaviour
     void Update()
     {
         Vector2 move = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-        direction = transform.forward * move.y;
+        Vector3 direction = new Vector3(move.x, 0f, move.y).normalized;
+        if(direction.magnitude >= 0.1f)
+        {
+            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + transform.eulerAngles.y;
+            Debug.Log(targetAngle);
+            moveDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+        }
+        else
+        {
+            moveDirection = Vector3.zero;
+        }
         if (Input.mousePosition.x < Camera.main.scaledPixelWidth / 4)
         {
             transform.Rotate(new Vector3(0, -turnSpeed * Time.deltaTime, 0));
-            //rb.MoveRotation(transform.rotation);
         }
         else if(Input.mousePosition.x > (Camera.main.scaledPixelWidth / 4) * 3)
         {
             transform.Rotate(new Vector3(0, turnSpeed * Time.deltaTime, 0));
-            //rb.MoveRotation(transform.rotation);
         }
     }
     private void FixedUpdate()
     { 
-        rb.velocity = direction.normalized * moveSpeed * Time.fixedDeltaTime * 10;
+        rb.velocity = moveDirection.normalized * moveSpeed * Time.fixedDeltaTime * 10;
     }
 }
