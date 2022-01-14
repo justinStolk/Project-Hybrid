@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/FPController.unity
-    guid: 3595640257f6f464685e8a7b07f4620f
+    path: Assets/Scenes/MazeTest.unity
+    guid: ace1513e1c8d876488ab08fbba77878e
   m_configObjects: {}
