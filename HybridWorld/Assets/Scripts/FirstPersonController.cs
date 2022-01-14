@@ -52,6 +52,11 @@ public class FirstPersonController : MonoBehaviour
     {
         Health -= 1;
         Debug.Log(Health);
+        EventSystem.CallEvent(EventType.ON_PLAYER_DAMAGED);
+        if(Health == 0)
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+        }
     }
 
 }
