@@ -35,3 +35,13 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+*.log
+HybridWorld/Logs/shadercompiler-UnityShaderCompiler.exe5.log
+HybridWorld/Logs/shadercompiler-UnityShaderCompiler.exe4.log
+HybridWorld/Logs/shadercompiler-UnityShaderCompiler.exe3.log
+HybridWorld/Logs/shadercompiler-UnityShaderCompiler.exe2.log
+HybridWorld/Logs/shadercompiler-UnityShaderCompiler.exe1.log
+HybridWorld/Logs/shadercompiler-UnityShaderCompiler.exe0.log
+HybridWorld/Logs/shadercompiler-AssetImportWorker0.log
+HybridWorld/Logs/AssetImportWorker1.log
+HybridWorld/Logs/AssetImportWorker0.log
