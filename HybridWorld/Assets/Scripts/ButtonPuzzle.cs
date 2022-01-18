@@ -4,15 +4,40 @@ using UnityEngine;
 
 public class ButtonPuzzle : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private List<PuzzleButton> buttonsInOrder;
+    [SerializeField] private GameObject door;
+    private int indexer = 0;
+
+    private void Start()
     {
-        
+        foreach(PuzzleButton pb in buttonsInOrder)
+        {
+            pb.SetOwner(this);
+        }
+    }
+    public void OnButtonCalled(PuzzleButton caller)
+    {
+        if(caller == buttonsInOrder[indexer])
+        {
+            Debug.Log("Correct button!");
+            if (indexer == buttonsInOrder.Count - 1)
+            {
+                OnPuzzleCleared();
+                buttonsInOrder.Clear();
+            }
+            indexer++;
+        }
+        else
+        {
+            Debug.Log("Wrong button!");
+            indexer = 0;
+        }
+    }
+    private void OnPuzzleCleared()
+    {
+        Debug.Log("The puzzle has been cleared!");
+        Destroy(door);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }
