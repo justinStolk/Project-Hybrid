@@ -6,16 +6,22 @@ public class FirstPersonController : MonoBehaviour
 {
     [SerializeField] private float moveSpeed;
     [SerializeField] private float turnSpeed;
+    [SerializeField] private float maxInteractDistance = 20f;
+    [SerializeField] private float maximumViewAngles = 45;
     private Rigidbody rb;
+    private Camera FPCam;
+    private float camTurnTracker = 0f;
     private float turnSmoothTime = 0.1f;
     private float turnSmoothVelocity;
     private Vector3 moveDirection;
+
 
     public int Health { get; private set; }
 
     // Start is called before the first frame update
     void Start()
     {
+        FPCam = GetComponentInChildren<Camera>();
         Health = 3;
         rb = GetComponent<Rigidbody>();
     }
@@ -34,14 +40,35 @@ public class FirstPersonController : MonoBehaviour
         {
             moveDirection = Vector3.zero;
         }
-        if (Input.mousePosition.x < Camera.main.scaledPixelWidth / 4)
+        if (Input.mousePosition.x < FPCam.scaledPixelWidth / 4)
         {
             transform.Rotate(new Vector3(0, -turnSpeed * Time.deltaTime, 0));
         }
-        else if(Input.mousePosition.x > (Camera.main.scaledPixelWidth / 4) * 3)
+        else if(Input.mousePosition.x > (FPCam.scaledPixelWidth / 4) * 3)
         {
             transform.Rotate(new Vector3(0, turnSpeed * Time.deltaTime, 0));
         }
+
+        if (Input.mousePosition.y < FPCam.scaledPixelHeight / 4 && camTurnTracker > -maximumViewAngles)
+        {
+            camTurnTracker -= turnSpeed * Time.deltaTime;
+            FPCam.transform.Rotate(new Vector3(turnSpeed * Time.deltaTime, 0, 0));
+        }
+        else if (Input.mousePosition.y > (FPCam.scaledPixelHeight / 4) * 3 && camTurnTracker < maximumViewAngles)
+        {
+            camTurnTracker += turnSpeed * Time.deltaTime;
+            FPCam.transform.Rotate(new Vector3(-turnSpeed * Time.deltaTime, 0, 0));
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            RaycastHit hit;
+            if(Physics.Raycast(FPCam.transform.position, transform.forward, out hit, maxInteractDistance))
+            {
+                Debug.Log(hit.transform.gameObject.name);
+            }
+        }
+
     }
     private void FixedUpdate()
     { 
