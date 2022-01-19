@@ -7,6 +7,8 @@ public class SwitchPuzzle : MonoBehaviour, IInteractable
     public List<PuzzleSwitch> switches;
     [SerializeField] private Stance[] stances;
     [SerializeField] private int timerFailCost = 15;
+    public AudioSource wrongBuzzer;
+
 
     public void EvaluateSwitches()
     {
@@ -14,6 +16,7 @@ public class SwitchPuzzle : MonoBehaviour, IInteractable
         {
             if(switches[i].stance != stances[i])
             {
+                wrongBuzzer.Play();
                 Debug.Log("Wrong solution, switch " + (i + 1) + " is wrong. It's stance is: " + switches[i].stance + ", while it should be: " + stances[i]);
                 FloatEventSystem.CallEvent(EventType.ON_PUZZLE_ERROR, timerFailCost);
                 return;
