@@ -6,6 +6,7 @@ public class ButtonPuzzle : MonoBehaviour
 {
     [SerializeField] private List<PuzzleButton> buttonsInOrder;
     [SerializeField] private GameObject door;
+    [SerializeField] private int timerFailCost = 15;
     private int indexer = 0;
 
     private void Start()
@@ -30,6 +31,7 @@ public class ButtonPuzzle : MonoBehaviour
         else
         {
             Debug.Log("Wrong button!");
+            FloatEventSystem.CallEvent(EventType.ON_PUZZLE_ERROR, timerFailCost);
             indexer = 0;
         }
     }

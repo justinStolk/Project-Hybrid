@@ -8,6 +8,10 @@ public class CountDownTimer : MonoBehaviour
     public float timeValue;
     public Text timerText;
 
+    private void Start()
+    {
+        FloatEventSystem.Subscribe(EventType.ON_PUZZLE_ERROR, DecreaseTime);
+    }
     void Update()
     {
         if (timeValue > 0)
@@ -34,5 +38,9 @@ public class CountDownTimer : MonoBehaviour
 
         timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
 
+    }
+    void DecreaseTime(float amount)
+    {
+        timeValue -= amount;
     }
 }
