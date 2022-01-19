@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PuzzleButton : MonoBehaviour
+public class PuzzleButton : MonoBehaviour, IInteractable
 {
     private ButtonPuzzle owner;
 
@@ -10,10 +10,9 @@ public class PuzzleButton : MonoBehaviour
     {
         this.owner = owner;
     }
-    public void OnButtonInteraction()
+
+    public void Interact()
     {
         owner.OnButtonCalled(this);
     }
-
-
 }

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EventType { ON_PLAYER_DAMAGED }
+public enum EventType { ON_PLAYER_DAMAGED, ON_PUZZLE_CLEARED }
 
 public static class EventSystem
 {

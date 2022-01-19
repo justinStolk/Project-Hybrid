@@ -36,6 +36,7 @@ public class ButtonPuzzle : MonoBehaviour
     private void OnPuzzleCleared()
     {
         Debug.Log("The puzzle has been cleared!");
+        //EventSystem.CallEvent(EventType.ON_PUZZLE_CLEARED);
         Destroy(door);
     }
 

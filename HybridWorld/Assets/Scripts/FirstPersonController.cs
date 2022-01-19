@@ -63,7 +63,17 @@ public class FirstPersonController : MonoBehaviour
             FPCam.transform.Rotate(new Vector3(-turnSpeed * scaledVerticalRotation * Time.deltaTime, 0, 0));
         }
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetMouseButtonDown(0))
+        {
+            RaycastHit hit;
+            Ray screenRay = FPCam.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(screenRay, out hit, maxInteractDistance))
+            {
+                Debug.Log(hit.transform.gameObject.name);
+                hit.transform.GetComponent<IInteractable>()?.Interact();
+            }
+        }
+      /*  if (Input.GetKeyDown(KeyCode.E))
         {
             RaycastHit hit;
             if(Physics.Raycast(FPCam.transform.position, transform.forward, out hit, maxInteractDistance))
@@ -71,7 +81,7 @@ public class FirstPersonController : MonoBehaviour
                 hit.transform.GetComponent<PuzzleButton>()?.OnButtonInteraction();
             }
         }
-
+      */
     }
     private void FixedUpdate()
     { 
