@@ -58,14 +58,16 @@ public class FirstPersonController : MonoBehaviour
         if (verticalRotationValue < FPCam.scaledPixelHeight / 4 && camTurnTracker > -maximumViewAngles)
         {
             float scaledVerticalRotation = 1 - (verticalRotationValue / (FPCam.scaledPixelHeight / 4));
-            camTurnTracker -= turnSpeed * scaledVerticalRotation * Time.deltaTime;
-            FPCam.transform.Rotate(new Vector3(turnSpeed * mouseSensitivity * scaledVerticalRotation * Time.deltaTime, 0, 0));
+            float turningPower = turnSpeed * mouseSensitivity * scaledVerticalRotation * Time.deltaTime;
+            camTurnTracker -= turningPower;
+            FPCam.transform.Rotate(new Vector3(turningPower, 0, 0));
         }
         else if (verticalRotationValue > (FPCam.scaledPixelHeight / 4) * 3 && camTurnTracker < maximumViewAngles)
         {
             float scaledVerticalRotation = (verticalRotationValue - ((FPCam.scaledPixelHeight/4) * 3)) / (FPCam.scaledPixelHeight / 4);
-            camTurnTracker += turnSpeed * scaledVerticalRotation * Time.deltaTime;
-            FPCam.transform.Rotate(new Vector3(-turnSpeed * mouseSensitivity * scaledVerticalRotation * Time.deltaTime, 0, 0));
+            float turningPower = turnSpeed * mouseSensitivity * scaledVerticalRotation * Time.deltaTime;
+            camTurnTracker += turningPower;
+            FPCam.transform.Rotate(new Vector3(-turningPower, 0, 0));
         }
 
         if (Input.GetMouseButtonDown(0))

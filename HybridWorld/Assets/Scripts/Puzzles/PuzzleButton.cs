@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PuzzleButton : MonoBehaviour, IInteractable
 {
-    private ButtonPuzzle owner;
+    [SerializeField] private ButtonPuzzle owner;
 
     public void SetOwner(ButtonPuzzle owner)
     {
