@@ -6,7 +6,8 @@ using UnityEngine;
 public enum EventType 
     { 
     ON_PLAYER_DAMAGED, 
-    ON_PUZZLE_CLEARED, 
+    ON_BUTTON_PUZZLE_CLEARED,
+    ON_SWITCH_PUZZLE_CLEARED,
     ON_PUZZLE_ERROR,
     ON_MOUSESENSITIVITY_CHANGED
     }

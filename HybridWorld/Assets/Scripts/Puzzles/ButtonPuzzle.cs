@@ -5,7 +5,6 @@ using UnityEngine;
 public class ButtonPuzzle : MonoBehaviour
 {
     [SerializeField] private List<PuzzleButton> buttonsInOrder;
-    [SerializeField] private GameObject door;
     [SerializeField] private int timerFailCost = 15;
     private int indexer = 0;
 
@@ -38,8 +37,8 @@ public class ButtonPuzzle : MonoBehaviour
     private void OnPuzzleCleared()
     {
         Debug.Log("The puzzle has been cleared!");
-        //EventSystem.CallEvent(EventType.ON_PUZZLE_CLEARED);
-        Destroy(door);
+        EventSystem.CallEvent(EventType.ON_BUTTON_PUZZLE_CLEARED);
+        Destroy(this);
     }
 
 

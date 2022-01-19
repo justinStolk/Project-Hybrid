@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public enum Stance { UP = 0, RIGHT = 1, DOWN = 2, LEFT = 3 }
+public enum Stance { DOWN = 0, LEFT = 1, UP = 2, RIGHT = 3 }
 public class PuzzleSwitch : MonoBehaviour, IInteractable
 {
     public Stance stance { get; private set; }
@@ -9,8 +9,8 @@ public class PuzzleSwitch : MonoBehaviour, IInteractable
 
     void Start()
     {
-        stance = (Stance)((lever.rotation.eulerAngles.x / 90) % 4);
-        Debug.Log(lever.rotation.eulerAngles.x) ;
+        stance = (Stance)((lever.localRotation.eulerAngles.y / 90) % 4);
+        Debug.Log(lever.rotation.eulerAngles.y) ;
     }
 
     public void FlipSwitch()
@@ -30,7 +30,7 @@ public class PuzzleSwitch : MonoBehaviour, IInteractable
                 stance = Stance.UP;
                 break;
         }
-        lever.Rotate(90, 0, 0);
+        lever.Rotate(0, 90, 0);
     }
     public void Interact()
     {

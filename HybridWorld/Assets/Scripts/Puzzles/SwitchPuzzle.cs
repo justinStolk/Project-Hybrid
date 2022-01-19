@@ -19,7 +19,9 @@ public class SwitchPuzzle : MonoBehaviour, IInteractable
                 return;
             }
         }
+        EventSystem.CallEvent(EventType.ON_SWITCH_PUZZLE_CLEARED);
         Debug.Log("All switches are correct!");
+        Destroy(this);
     }
 
     public void Interact()
