@@ -11,6 +11,7 @@ public class FirstPersonController : MonoBehaviour
     private Rigidbody rb;
     private Camera FPCam;
     private float camTurnTracker = 0f;
+    private float mouseSensitivity = 10;
     private Vector3 moveDirection;
 
 
@@ -27,6 +28,10 @@ public class FirstPersonController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GameManager.instance.GamePaused)
+        {
+            return;
+        }
         Vector2 move = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         Vector3 direction = new Vector3(move.x, 0f, move.y).normalized;
         if(direction.magnitude >= 0.1f)
@@ -42,25 +47,25 @@ public class FirstPersonController : MonoBehaviour
         if (horizontalRotationValue < FPCam.scaledPixelWidth / 4)
         {
             float scaledHorizontalRotation = 1 - (horizontalRotationValue / (FPCam.scaledPixelWidth / 4));
-            transform.Rotate(new Vector3(0, -turnSpeed * scaledHorizontalRotation * Time.deltaTime, 0));
+            transform.Rotate(new Vector3(0, -turnSpeed * mouseSensitivity * scaledHorizontalRotation * Time.deltaTime, 0));
         }
         else if(horizontalRotationValue > (FPCam.scaledPixelWidth / 4) * 3)
         {
             float scaledHorizontalRotation = (horizontalRotationValue - ((FPCam.scaledPixelWidth / 4) * 3)) / (FPCam.scaledPixelWidth / 4);
-            transform.Rotate(new Vector3(0, turnSpeed * scaledHorizontalRotation * Time.deltaTime, 0));
+            transform.Rotate(new Vector3(0, turnSpeed * mouseSensitivity * scaledHorizontalRotation * Time.deltaTime, 0));
         }
         float verticalRotationValue = Mathf.Clamp(Input.mousePosition.y, 0, FPCam.scaledPixelHeight);
         if (verticalRotationValue < FPCam.scaledPixelHeight / 4 && camTurnTracker > -maximumViewAngles)
         {
             float scaledVerticalRotation = 1 - (verticalRotationValue / (FPCam.scaledPixelHeight / 4));
             camTurnTracker -= turnSpeed * scaledVerticalRotation * Time.deltaTime;
-            FPCam.transform.Rotate(new Vector3(turnSpeed * scaledVerticalRotation * Time.deltaTime, 0, 0));
+            FPCam.transform.Rotate(new Vector3(turnSpeed * mouseSensitivity * scaledVerticalRotation * Time.deltaTime, 0, 0));
         }
         else if (verticalRotationValue > (FPCam.scaledPixelHeight / 4) * 3 && camTurnTracker < maximumViewAngles)
         {
             float scaledVerticalRotation = (verticalRotationValue - ((FPCam.scaledPixelHeight/4) * 3)) / (FPCam.scaledPixelHeight / 4);
             camTurnTracker += turnSpeed * scaledVerticalRotation * Time.deltaTime;
-            FPCam.transform.Rotate(new Vector3(-turnSpeed * scaledVerticalRotation * Time.deltaTime, 0, 0));
+            FPCam.transform.Rotate(new Vector3(-turnSpeed * mouseSensitivity * scaledVerticalRotation * Time.deltaTime, 0, 0));
         }
 
         if (Input.GetMouseButtonDown(0))
@@ -73,19 +78,14 @@ public class FirstPersonController : MonoBehaviour
                 hit.transform.GetComponent<IInteractable>()?.Interact();
             }
         }
-      /*  if (Input.GetKeyDown(KeyCode.E))
-        {
-            RaycastHit hit;
-            if(Physics.Raycast(FPCam.transform.position, transform.forward, out hit, maxInteractDistance))
-            {
-                hit.transform.GetComponent<PuzzleButton>()?.OnButtonInteraction();
-            }
-        }
-      */
     }
     private void FixedUpdate()
     { 
         rb.velocity = moveDirection.normalized * moveSpeed * Time.fixedDeltaTime * 10;
+    }
+    public void UpdateMouseSensitivity(float newValue) 
+    {
+        mouseSensitivity = newValue;
     }
 
     public void TakeHit()
