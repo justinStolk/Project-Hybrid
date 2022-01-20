@@ -14,18 +14,13 @@ public class ScenePusher : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (introVideo.isPrepared)
+        if (introVideo.isPlaying)
         {
             prepped = true;
         }
         if (!introVideo.isPlaying && prepped)
         {
-            LoadNextScene();
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
-    }
-
-    public void LoadNextScene()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }
