@@ -29,7 +29,7 @@ public class CountDownTimer : MonoBehaviour
         DisplayTime(timeValue);
         if (timeValue == 0)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 2);
         }
     }
 
