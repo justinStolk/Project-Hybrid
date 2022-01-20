@@ -7,11 +7,16 @@ public class SwitchPuzzle : MonoBehaviour, IInteractable
     public List<PuzzleSwitch> switches;
     [SerializeField] private Stance[] stances;
     [SerializeField] private int timerFailCost = 15;
+    [SerializeField] private Material clearedMat;
     public AudioSource wrongBuzzer;
-
+    private bool isCleared;
 
     public void EvaluateSwitches()
     {
+        if (isCleared)
+        {
+            return;
+        }
         for(int i = 0; i < switches.Count; i++)
         {
             if(switches[i].stance != stances[i])
@@ -23,8 +28,16 @@ public class SwitchPuzzle : MonoBehaviour, IInteractable
             }
         }
         EventSystem.CallEvent(EventType.ON_SWITCH_PUZZLE_CLEARED);
+        MeshRenderer[] meshRenderers = GetComponentsInChildren<MeshRenderer>();
+        foreach(MeshRenderer m in meshRenderers)
+        {
+            if (m.gameObject.CompareTag("SButton"))
+            {
+                m.material = clearedMat;
+            }
+        }
         Debug.Log("All switches are correct!");
-        Destroy(this);
+        isCleared = true;
     }
 
     public void Interact()

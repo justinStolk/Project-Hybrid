@@ -81,6 +81,15 @@ public class FirstPersonController : MonoBehaviour
             }
         }
     }
+    public void TargetDynamically()
+    {
+
+    }
+    public void Classically()
+    {
+
+    }
+
     private void FixedUpdate()
     { 
         rb.velocity = moveDirection.normalized * moveSpeed * Time.fixedDeltaTime * 10;

@@ -8,6 +8,8 @@ public class CountDownTimer : MonoBehaviour
 {
     public float timeValue;
     public Text timerText;
+    [SerializeField] private float timerScale = 1.2f;
+    [SerializeField] private float timerHighlightTime = 1.5f;
 
     private void Start()
     {
@@ -46,6 +48,16 @@ public class CountDownTimer : MonoBehaviour
     }
     void DecreaseTime(float amount)
     {
+        StartCoroutine(ShowTimerDecrease());
         timeValue -= amount;
+    }
+
+    IEnumerator ShowTimerDecrease()
+    {
+        timerText.color = Color.red;
+        timerText.gameObject.transform.localScale = new Vector3(timerScale, timerScale, timerScale);
+        yield return new WaitForSeconds(timerHighlightTime);
+        timerText.color = Color.white;
+        timerText.gameObject.transform.localScale = Vector3.one;
     }
 }
