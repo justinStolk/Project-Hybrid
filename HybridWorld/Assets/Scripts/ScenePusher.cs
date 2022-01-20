@@ -20,7 +20,12 @@ public class ScenePusher : MonoBehaviour
         }
         if (!introVideo.isPlaying && prepped)
         {
-            SceneManager.LoadScene(2);
+            LoadNextScene();
         }
+    }
+
+    public void LoadNextScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }

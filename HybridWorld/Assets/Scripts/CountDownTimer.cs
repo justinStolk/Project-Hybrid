@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class CountDownTimer : MonoBehaviour
 {
@@ -24,6 +25,10 @@ public class CountDownTimer : MonoBehaviour
         }
 
         DisplayTime(timeValue);
+        if (timeValue == 0)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
     }
 
     void DisplayTime(float timeToDisplay)
