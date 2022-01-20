@@ -12,7 +12,9 @@ public class FirstPersonController : MonoBehaviour
     private Camera FPCam;
     private float camTurnTracker = 0f;
     private float mouseSensitivity = 10;
+    private float xRotation = 0f;
     private Vector3 moveDirection;
+    private bool dynamicState;
 
 
     public int Health { get; private set; }
@@ -20,6 +22,7 @@ public class FirstPersonController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Cursor.lockState = CursorLockMode.Confined;
         FPCam = GetComponentInChildren<Camera>();
         Health = 3;
         rb = GetComponent<Rigidbody>();
@@ -43,13 +46,51 @@ public class FirstPersonController : MonoBehaviour
         {
             moveDirection = Vector3.zero;
         }
+
+        if (dynamicState)
+        {
+            TargetDynamically();
+        }
+        else
+        {
+            TargetClassically();
+        }
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            dynamicState = !dynamicState;
+        }
+        if (Input.GetMouseButtonDown(0))
+        {
+            RaycastHit hit;
+            Ray screenRay = FPCam.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(screenRay, out hit, maxInteractDistance))
+            {
+                Debug.Log(hit.transform.gameObject.name);
+                hit.transform.GetComponent<IInteractable>()?.Interact();
+            }
+        }
+    }
+    public void TargetDynamically()
+    { 
+        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime * turnSpeed;
+        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime * turnSpeed;
+        transform.Rotate(Vector3.up * mouseX);
+
+        xRotation -= mouseY;
+
+        FPCam.transform.localRotation = Quaternion.Euler(xRotation, 0, 0);
+        xRotation = Mathf.Clamp(xRotation, -maximumViewAngles, maximumViewAngles);
+
+    }
+    public void TargetClassically()
+    {
         float horizontalRotationValue = Mathf.Clamp(Input.mousePosition.x, 0, FPCam.scaledPixelWidth);
         if (horizontalRotationValue < FPCam.scaledPixelWidth / 4)
         {
             float scaledHorizontalRotation = 1 - (horizontalRotationValue / (FPCam.scaledPixelWidth / 4));
             transform.Rotate(new Vector3(0, -turnSpeed * mouseSensitivity * scaledHorizontalRotation * Time.deltaTime, 0));
         }
-        else if(horizontalRotationValue > (FPCam.scaledPixelWidth / 4) * 3)
+        else if (horizontalRotationValue > (FPCam.scaledPixelWidth / 4) * 3)
         {
             float scaledHorizontalRotation = (horizontalRotationValue - ((FPCam.scaledPixelWidth / 4) * 3)) / (FPCam.scaledPixelWidth / 4);
             transform.Rotate(new Vector3(0, turnSpeed * mouseSensitivity * scaledHorizontalRotation * Time.deltaTime, 0));
@@ -64,30 +105,11 @@ public class FirstPersonController : MonoBehaviour
         }
         else if (verticalRotationValue > (FPCam.scaledPixelHeight / 4) * 3 && camTurnTracker < maximumViewAngles)
         {
-            float scaledVerticalRotation = (verticalRotationValue - ((FPCam.scaledPixelHeight/4) * 3)) / (FPCam.scaledPixelHeight / 4);
+            float scaledVerticalRotation = (verticalRotationValue - ((FPCam.scaledPixelHeight / 4) * 3)) / (FPCam.scaledPixelHeight / 4);
             float turningPower = turnSpeed * mouseSensitivity * scaledVerticalRotation * Time.deltaTime;
             camTurnTracker += turningPower;
             FPCam.transform.Rotate(new Vector3(-turningPower, 0, 0));
         }
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            RaycastHit hit;
-            Ray screenRay = FPCam.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(screenRay, out hit, maxInteractDistance))
-            {
-                Debug.Log(hit.transform.gameObject.name);
-                hit.transform.GetComponent<IInteractable>()?.Interact();
-            }
-        }
-    }
-    public void TargetDynamically()
-    {
-
-    }
-    public void Classically()
-    {
-
     }
 
     private void FixedUpdate()
